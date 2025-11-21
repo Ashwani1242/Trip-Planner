@@ -23,7 +23,7 @@ export default function Home() {
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [focusedLocation, setFocusedLocation] = useState<{ lat: number; lng: number } | null>(null);
 
-  const { isSidebarOpen } = useSidebar();
+  const { isSidebarOpen, toggle } = useSidebar();
 
   useEffect(() => {
     const saved = localStorage.getItem("map-markers");
@@ -173,9 +173,7 @@ export default function Home() {
   return (
     <div className="flex h-screen bg-background text-foreground relative overflow-hidden">
       <div
-        className={`absolute top-0 left-0 h-full transition-transform duration-300 ease-in-out z-1000 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          }`}
-      >
+        className={`absolute top-0 left-0 h-full transition-transform duration-300 ease-in-out z-1001 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <Sidebar
           markers={filteredMarkers}
           onDelete={handleDeleteMarker}
@@ -190,15 +188,23 @@ export default function Home() {
           userLocation={userLocation}
           onRenameMarker={handleRenameMarker}
         />
+        {/* <div className=" right-4 z-1001">
+          <HamburgerToggle />
+        </div> */}
       </div>
 
-      <div className={`flex-1 flex flex-col p-0 relative transition-all duration-300 ease-in-out ${isSidebarOpen ? 'ml-80' : 'ml-0'
-        }`}>
-        <div className="absolute top-4 left-4 z-1001">
-          <HamburgerToggle />
-        </div>
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-999 lg:hidden transition-opacity duration-300"
+          onClick={toggle}
+        />
+      )}
 
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 w-full max-w-md z-1000 px-4">
+      <div className={`flex-1 flex flex-col p-0 relative transition-all duration-300 ease-in-out ${isSidebarOpen ? 'lg:ml-80' : 'ml-0'
+        }`}>
+
+        <div className="absolute flex flex-row items-center justify-between top-4 left-1/2 -translate-x-1/2 w-full max-w-md/ z-1000 px-4">
+          <HamburgerToggle />
           <SearchBox onSelect={handleSearchSelect} />
         </div>
 

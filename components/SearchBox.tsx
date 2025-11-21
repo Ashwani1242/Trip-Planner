@@ -73,14 +73,14 @@ export default function SearchBox({ onSelect }: SearchBoxProps) {
     };
 
     return (
-        <div ref={wrapperRef} className="relative w-full group">
+        <div ref={wrapperRef} className="relative p-4 w-full max-w-md group">
             <div className="relative">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground z-10 group-focus-within:text-primary transition-colors">
                     <Search size={18} />
                 </div>
                 <input
                     type="text"
-                    className="w-full pl-10 pr-10 py-3 rounded-xl border border-border/50 bg-background/80 backdrop-blur-md shadow-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-muted-foreground text-sm"
+                    className="w-full pl-10 pr-10 py-3 rounded-xl border border-border/60 bg-background/80 backdrop-blur-md shadow-lg ring-2 ring-primary/10 focus:outline-none focus:ring-primary/50 transition-all placeholder:text-muted-foreground text-sm"
                     placeholder="Search for places, addresses..."
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}

@@ -33,7 +33,7 @@ export default function MarkerForm({ lat, lng, onSave, onCancel }: MarkerFormPro
     };
 
     return (
-        <div className="absolute top-4 right-4 z-1000 w-80 bg-card/95 backdrop-blur-md text-card-foreground p-4 rounded-xl shadow-2xl border border-border/50 animate-in fade-in slide-in-from-top-2">
+        <div className="absolute bottom-4 left-4 right-4 sm:bottom-auto sm:top-4 sm:right-4 sm:left-auto z-1000 w-auto sm:w-80 bg-card/95 backdrop-blur-md text-card-foreground p-4 rounded-xl shadow-2xl border border-border/50 animate-in fade-in slide-in-from-top-2 max-h-[calc(100vh-8rem)] sm:max-h-none overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
                 <h3 className="font-bold text-lg">Add New Place</h3>
                 <button onClick={onCancel} className="text-muted-foreground hover:text-foreground">

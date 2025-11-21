@@ -8,6 +8,7 @@ import { Trash2, Navigation, MapPin, GripVertical, Edit2, Check, X } from "lucid
 import { AnimatedCounter } from "./AnimatedCounter";
 import PlaceCard from "./PlaceCard";
 import CategoryToggle from "./CategoryToggle";
+import { HamburgerToggle } from "./HamburgerIcon";
 
 interface SidebarProps {
     markers: MarkerData[];
@@ -66,18 +67,21 @@ export default function Sidebar({
     };
 
     return (
-        <div className="w-80 h-full bg-card/95 backdrop-blur-md border-r border-border flex flex-col shadow-2xl z-1000">
-            <div className="p-6 border-b border-border flex justify-between items-center bg-linear-to-r from-primary/10 to-transparent">
+        <div className="w-full sm:w-72 lg:w-80 h-full bg-card/95 backdrop-blur-md border-r border-border flex flex-col shadow-2xl z-1000">
+            <div className="p-4 sm:p-6 border-b border-border flex justify-between items-center bg-linear-to-r from-primary/10 to-transparent">
                 <div>
-                    <h1 className="text-2xl font-bold">
+                    <h1 className="text-xl sm:text-2xl font-bold">
                         Trip Planner
                     </h1>
                     <p className="text-xs text-muted-foreground font-medium">Plan your journey</p>
                 </div>
-                <ThemeToggle />
+                {/* <ThemeToggle /> */}
+                <div className="block md:hidden">
+                <HamburgerToggle />
+                </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-4 space-y-6 custom-scrollbar">
+            <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-6 custom-scrollbar">
 
                 <div className="space-y-3">
                     <div className="flex items-center justify-between">
@@ -171,7 +175,7 @@ export default function Sidebar({
                                     marker={marker}
                                     onDelete={onDelete}
                                     onAddToTrip={onAddWaypoint}
-                                    onRename={onRenameMarker}/>
+                                    onRename={onRenameMarker} />
                             ))}
                         </div>
                     )}
