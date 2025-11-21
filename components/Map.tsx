@@ -22,6 +22,7 @@ interface MapProps {
     userLocation: { lat: number; lng: number } | null;
     onUserLocationUpdate: (loc: { lat: number; lng: number }) => void;
     focusedLocation?: { lat: number; lng: number } | null;
+    isSidebarOpen: boolean;
 }
 
 export default function Map({
@@ -31,7 +32,8 @@ export default function Map({
     onRouteStats,
     userLocation,
     onUserLocationUpdate,
-    focusedLocation
+    focusedLocation,
+    isSidebarOpen
 }: MapProps) {
     const mapRef = useRef<L.Map | null>(null);
     const markersRef = useRef<{ [key: string]: L.Marker }>({});
@@ -76,6 +78,16 @@ export default function Map({
             setIsMapReady(true);
         }
     }, []);
+
+    useEffect(() => {
+        if (!mapRef.current) return;
+
+        const timer = setTimeout(() => {
+            mapRef.current?.invalidateSize();
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [isSidebarOpen]);
 
     useEffect(() => {
         if (!mapRef.current) return;

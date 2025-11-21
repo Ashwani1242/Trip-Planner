@@ -6,6 +6,8 @@ import Sidebar from "@/components/Sidebar";
 import SearchBox from "@/components/SearchBox";
 import MarkerForm from "@/components/MarkerForm";
 import { MarkerData, Waypoint } from "@/types";
+import { useSidebar } from "@/context/SidebarContext";
+import { HamburgerToggle } from "@/components/HamburgerIcon";
 
 const Map = dynamic(() => import("@/components/Map"), { ssr: false });
 
@@ -20,6 +22,8 @@ export default function Home() {
 
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [focusedLocation, setFocusedLocation] = useState<{ lat: number; lng: number } | null>(null);
+
+  const { isSidebarOpen } = useSidebar();
 
   useEffect(() => {
     const saved = localStorage.getItem("map-markers");
@@ -68,20 +72,20 @@ export default function Home() {
   };
 
   const handleSearchSelect = (loc: { lat: string; lon: string; name: string }) => {
-    
+
     const newMarker: MarkerData = {
       id: crypto.randomUUID(),
       lat: Number(loc.lat),
       lng: Number(loc.lon),
-      title: loc.name.split(",")[0], 
+      title: loc.name.split(",")[0],
       description: loc.name,
       category: "Other",
       createdAt: Date.now(),
     };
 
     setMarkers((prev) => [...prev, newMarker]);
-    setTempMarker(null); 
-    
+    setTempMarker(null);
+
     setFocusedLocation({ lat: newMarker.lat, lng: newMarker.lng });
   };
 
@@ -150,7 +154,7 @@ export default function Home() {
     };
 
     const options = {
-      enableHighAccuracy: false, 
+      enableHighAccuracy: false,
       timeout: 10000,
       maximumAge: 0
     };
@@ -167,24 +171,33 @@ export default function Home() {
     : markers.filter((m) => m.category === filter);
 
   return (
-    <div className="flex h-screen bg-background text-foreground">
-      <Sidebar
-        markers={filteredMarkers}
-        onDelete={handleDeleteMarker}
-        onFilterChange={setFilter}
-        filter={filter}
-        tripStats={tripStats}
-        waypoints={waypoints}
-        onAddWaypoint={handleAddWaypoint}
-        onRemoveWaypoint={handleRemoveWaypoint}
-        onReorderWaypoints={handleReorderWaypoints}
-        onClearTrip={handleClearTrip}
-        userLocation={userLocation}
-        onRenameMarker={handleRenameMarker}
-      />
+    <div className="flex h-screen bg-background text-foreground relative overflow-hidden">
+      <div
+        className={`absolute top-0 left-0 h-full transition-transform duration-300 ease-in-out z-1000 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
+      >
+        <Sidebar
+          markers={filteredMarkers}
+          onDelete={handleDeleteMarker}
+          onFilterChange={setFilter}
+          filter={filter}
+          tripStats={tripStats}
+          waypoints={waypoints}
+          onAddWaypoint={handleAddWaypoint}
+          onRemoveWaypoint={handleRemoveWaypoint}
+          onReorderWaypoints={handleReorderWaypoints}
+          onClearTrip={handleClearTrip}
+          userLocation={userLocation}
+          onRenameMarker={handleRenameMarker}
+        />
+      </div>
 
-      <div className="flex-1 flex flex-col p-0 relative">
-        
+      <div className={`flex-1 flex flex-col p-0 relative transition-all duration-300 ease-in-out ${isSidebarOpen ? 'ml-80' : 'ml-0'
+        }`}>
+        <div className="absolute top-4 left-4 z-1001">
+          <HamburgerToggle />
+        </div>
+
         <div className="absolute top-4 left-1/2 -translate-x-1/2 w-full max-w-md z-1000 px-4">
           <SearchBox onSelect={handleSearchSelect} />
         </div>
@@ -198,6 +211,7 @@ export default function Home() {
             userLocation={userLocation}
             onUserLocationUpdate={setUserLocation}
             focusedLocation={focusedLocation}
+            isSidebarOpen={isSidebarOpen}
           />
 
           {tempMarker && (
